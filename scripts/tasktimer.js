@@ -381,7 +381,7 @@ function changeRoom() {
     } else {
         noise = false;
     }
-    changeRoomImage(`./assets/images/room_${+stormy}${+fireplace}${+plants}${+noise}.webp`);
+    changeRoomImage(`assets/images/room_${+stormy}${+fireplace}${+plants}${+noise}.webp`);
 }
 
 function changeRoomImage(newRoom) {
