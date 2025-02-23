@@ -1,0 +1,332 @@
+@font-face {
+    font-family: Excalifont;
+    src: url(/assets/fonts/Excalifont-Regular.woff2);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Excalifont, "Caveat", serif;
+    background-color: #091e26;
+    height: 100vh;
+    margin: 0;
+    align-content: center;
+}
+
+header, footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ebede9;
+}
+
+
+footer {
+    padding: 16px 0;
+}
+footer a {
+    background-color: #ebede9;
+}
+
+
+.timer-widget {
+    background-color: #48627c ;
+    height: 670px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 960px;
+    width: 80%;
+    display: grid;
+    grid-template-rows: [header-start] 3em [header-end content-start] auto [content-end];
+}
+header {
+    grid-row: header;
+}
+
+.timer-main {
+    position: relative;
+    overflow: clip;
+    height: 100%;
+}
+
+.timer-main-section {
+    position: absolute;
+    width: 100%;
+    min-height: 600px;
+    display: grid;
+    grid-template-columns:
+        [main-start] auto [ambient-start] min-content [main-end ambient-end];
+    grid-template-rows:
+        [main-start] auto [main-end control-start] min-content [control-end];
+        z-index: 1;
+}
+
+.timer-controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    grid-column: main;
+    grid-row: control;
+    color: white;
+    text-align: center;
+}
+
+.ambient-controls {
+    grid-row: main;
+    grid-column: ambient;
+    margin-right:16px;
+    padding: 8px;
+    background-color: #12192077;
+}
+
+.ambient-list {
+    list-style: none;
+    gap: 16px;
+}
+
+.ambient-list div {
+    padding-bottom: 6px;
+}
+
+.ambient-option {
+    width: min-content;
+    height: min-content;
+    border: 0;
+    background-color: transparent;
+}
+
+.ambient-option img {
+    width: 52px;
+    height: 52px;
+}
+
+.ambient-slider {
+    align-self: center;
+    -webkit-appearance: none;
+    height: 5px;
+    border-radius: 2.5px;
+    width: 100px;
+    margin: 0 8px;
+}
+
+.ambient-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 36px;
+    background: url("/assets/images/slider.webp");
+}
+
+.ambient-slider::-moz-range-thumb {
+    width: 16px;
+    height: 36px;
+    border: 0;
+    background: url("/assets/images/slider.webp");
+    cursor: pointer;
+}
+
+.timer-popup {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    background-color: #f9fcff;
+    text-align: center;
+    color: #091e26;
+    width:fit-content;
+    padding: 2em;
+}
+
+.task-popup-input {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 12px 0;
+}
+.task-popup-input label {
+    width: 100%;
+    text-align: left;
+}
+
+.time-input {
+    width: 3em;
+    font-family: Excalifont, "Caveat", serif;
+}
+
+.timer-background-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 600px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.timer-bg-image {
+    width: 480px;
+    aspect-ratio: auto;
+    align-self: center;
+
+}
+
+.button-grayed {
+    filter: contrast(10%);
+}
+
+input[type=checkbox] {
+
+    filter: opacity(0%);
+}
+.checkbox-container {
+    position: relative;
+}
+
+.custom-checkbox {
+    position: absolute;
+    left: -4px;
+    width: 1em;
+    height: 1em;
+    border: 1px solid black;
+    background-color: #ebede9;
+    pointer-events: none;
+}
+
+input:checked ~ .custom-checkbox {
+    background-color:  #4f8fba;
+    color: #ebede9;
+}
+
+input:checked ~ .custom-checkbox:after {
+    position: relative;
+    top: -2px;
+    content: "L";
+    display: block;
+    transform: rotate(-135deg) scaleY(-2);
+    font-weight: bold;
+}
+
+/*
+#timer-widget {
+    margin: auto;
+    display: grid;
+    grid-template-areas:
+    "header  header  header  header  header  header"
+    "display display display display ambient ambient"
+    "display display display display ambient ambient"
+    "countdn countdn countdn countdn ambient ambient";
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 2em;;
+}
+
+header {
+    grid-area: header;
+    background-color: #ad7757;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    height: 60px;
+}
+h1 {
+    font-size: 42px;
+    margin: 0;
+    color: #ebede9;
+}
+
+#timer-main-section {
+    grid-area: display;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #e7d5b3;
+    height: 460px;
+}
+
+#timer-main-section img {
+    width: 50%;
+    height: auto
+}
+
+#timer-countdown-section {
+    display: flex;
+    flex-direction: column;
+    font-size: 48px;
+    justify-content: center;
+    text-align: center;
+    grid-area: countdn;
+    background-color: #d7b594;
+    padding: 10px;
+    border-bottom-left-radius: 2rem;
+    height:220px;
+}
+
+#countdown-button {
+    width: 80px;
+    height: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+#timer-ambient-section {
+    grid-area: ambient;
+    background-color: #e8c170;
+    border-bottom-right-radius: 2rem;
+    text-align: center;
+    padding: 20px;
+}
+#timer-ambient-section button {
+    height: 60px;
+    width: 60px;
+}
+
+.ambient-slider {
+    width: 100px;
+}
+
+#ambient-list {
+    display: grid;
+    row-gap: 20px;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+}
+
+input[type=checkbox] {
+    visibility:collapse;
+    height: 0;
+    width: 0;
+}
+
+
+
+#setup-frame {
+    position: absolute;
+    border: 5px solid #a8b5b2;
+    padding: .25em 1em;
+    background-color: #ebede9;
+    text-align: center;
+}
+
+#setup-frame div {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+button {
+    font-family: Excalifont;
+    color: #ebede9;
+    background-color: #73bed3;
+}
+#room-image {
+    display: block;
+    margin: auto;
+}
+*/
