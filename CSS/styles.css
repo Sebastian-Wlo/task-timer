@@ -1,6 +1,6 @@
 @font-face {
     font-family: Excalifont;
-    src: url(/assets/fonts/Excalifont-Regular.woff2);
+    src: url(../assets/fonts/Excalifont-Regular.woff2);
 }
 
 * {
@@ -117,14 +117,14 @@ header {
     appearance: none;
     width: 16px;
     height: 36px;
-    background: url("/assets/images/slider.webp");
+    background: url("../assets/images/slider.webp");
 }
 
 .ambient-slider::-moz-range-thumb {
     width: 16px;
     height: 36px;
     border: 0;
-    background: url("/assets/images/slider.webp");
+    background: url("../assets/images/slider.webp");
     cursor: pointer;
 }
 
@@ -329,4 +329,4 @@ button {
     display: block;
     margin: auto;
 }
-*/
+
