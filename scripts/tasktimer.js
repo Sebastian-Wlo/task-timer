@@ -113,7 +113,7 @@ function timerActive() {
     pauseButton.removeAttribute("disabled", "");
     resetButton.removeAttribute("disabled", "");
     timerPaused = false;
-    pauseButtonImage.setAttribute("src", "../assets/images/pause.webp");
+    pauseButtonImage.setAttribute("src", "assets/images/pause.webp");
     pauseButton.classList.remove("button-grayed");
     resetButton.classList.remove("button-grayed");
 }
@@ -124,7 +124,7 @@ function timerNotActive() {
     pauseButton.setAttribute("disabled", "");
     resetButton.setAttribute("disabled", "");
     timerPaused = true;
-    pauseButtonImage.setAttribute("src", "../assets/images/play.webp");
+    pauseButtonImage.setAttribute("src", "assets/images/play.webp");
     pauseButton.classList.add("button-grayed");
     resetButton.classList.add("button-grayed");
 }
@@ -194,10 +194,10 @@ taskStartButton.addEventListener("click", () => {
 
 pauseButton.addEventListener("click", () => {
         if (timerPaused)  {
-            pauseButtonImage.setAttribute("src", "../assets/images/pause.webp");
+            pauseButtonImage.setAttribute("src", "assets/images/pause.webp");
         }
         else {
-            pauseButtonImage.setAttribute("src", "../assets/images/play.webp");
+            pauseButtonImage.setAttribute("src", "assets/images/play.webp");
         }
         timerPaused = !timerPaused;
 });
@@ -381,7 +381,7 @@ function changeRoom() {
     } else {
         noise = false;
     }
-    changeRoomImage(`../assets/images/room_${+stormy}${+fireplace}${+plants}${+noise}.webp`);
+    changeRoomImage(`assets/images/room_${+stormy}${+fireplace}${+plants}${+noise}.webp`);
 }
 
 function changeRoomImage(newRoom) {
