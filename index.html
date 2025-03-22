@@ -15,126 +15,217 @@
 </head>
 
 <body>
-  <main>
-    <div class="timer-widget">
-      <header>
-        <h1 class="timer-title">Task Timer</h1>
-      </header>
-      <div class="timer-main">
+  <main class="timer-widget">
 
-        <div class="timer-main-section">
-          <!-- Ambient Controls -->
-          <div class="ambient-controls">
-            <ul class="ambient-list">
-              <li>
-                <div style="display: flex;">
-                  <button id="wind-button" type="button" class="ambient-option"><img
-                      src="assets/images/icon_wind.webp"></button>
-                  <input id="wind-volume" type="range" class="ambient-slider" min="0" max="100" , value="50" step="10">
-                </div>
-              </li>
-              <li>
-                <div style="display: flex;">
-                  <button id="rain-button" type="button" class="ambient-option"><img
-                      src="assets/images/icon_rain.webp"></button>
-                  <input id="rain-volume" type="range" class="ambient-slider" min="0" max="100" , value="50" step="10">
-                </div>
-              </li>
-              <li>
-                <div style="display: flex;">
-                  <button id="storm-button" type="button" class="ambient-option"><img
-                      src="assets/images/icon_storm.webp"></button>
-                  <input id="storm-volume" type="range" class="ambient-slider" min="0" max="100" , value="50" step="10">
-                </div>
-              </li>
-              <li>
-                <div style="display: flex;">
-                  <button id="fireplace-button" type="button" class="ambient-option"><img
-                      src="assets/images/icon_fire.webp"></button>
-                  <input id="fireplace-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
-                    step="10">
-                </div>
-              </li>
-              <li>
-                <div style="display: flex;">
-                  <button id="cricket-button" type="button" class="ambient-option"><img
-                      src="assets/images/icon_cricket.webp"></button>
-                  <input id="cricket-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
-                    step="10">
-                </div>
-              </li>
-              <li>
-                <div style="display: flex;">
-                  <button id="whitenoise-button" type="button" class="ambient-option"><img
-                      src="assets/images/icon_w.webp"></button>
-                  <input id="whitenoise-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
-                    step="10">
-                </div>
-              </li>
-              <li>
-                <div style="display: flex;">
-                  <button id="pinknoise-button" type="button" class="ambient-option"><img
-                      src="assets/images/icon_p.webp"></button>
-                  <input id="pinknoise-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
-                    step="10">
-                </div>
-              </li>
-              <li>
-                <div style="display: flex;">
-                  <button id="browniannoise-button" type="button" class="ambient-option"><img
-                      src="assets/images/icon_b.webp"></button>
-                  <input id="browniannoise-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
-                    step="10">
-                </div>
-              </li>
-            </ul>
+    <header>
+      <h1>Task Timer</h1>
+    </header>
+  
+    <div class="main-section">
+      <!-- Alert Modal -->
+      <div id="timer-modal">
+        <h2>What do you want to focus on today?</h2>
+        <hr>
+        <div class="timer-popup-inputs">
+          
+          <textarea id="task-name" onInput="auto_height(this)" autofocus></textarea>
+          
+          <div class="popup-option">
+            <label for"popup-minutes">For how many minutes?</label>
+            <input id="popup-minutes" type="number" min="1" max="255" value="25">  
           </div>
-
-          <div class="timer-controls">
-            <h2 id="task-text">Task name</h2>
-            <h3 id="countdown-display">25 minutes to go</h3>
-            <div class="timer-buttons">
-              <button id="pause" class="ambient-option" disabled class="button-grayed"><img id="pausebutton-image"
-                  src="assets/images/pause.webp" alt="pause"></button>
-              <button id="reset" class="ambient-option" disabled class="button-grayed"><img
-                  src="assets/images/reset.webp" alt="reset"></button>
-            </div>
+          <div class="popup-option">
+            <label for="popup-checkbox">Play alert sound after timer?</label>
+            <input id="popup-checkbox" type="checkbox">
           </div>
-
-          <!-- Timer Modal -->
-          <div id="task-dialog-window" class="timer-popup">
-            <h2 id="timer-popup-heading">
-              What do you want to focus on today?
-            </h2>
-            <div class="timer-popup-inputs">
-              <input id="task-text-input" class="task-title-input" aria-labelledy="timer-popup-heading"
-                placeholder="Task Name">
-              <hr>
-              <div class="task-popup-input">
-                <label for="timer-minutes">For how many minutes?</label>
-                <input id="timer-minutes" class="time-input" type="number" value="25" min="0">
-              </div>
-              <div class="task-popup-input">
-                <label for="timer-checkbox">Play alert sound after timer?</label>
-                <div class="checkbox-container">
-                  <input id="timer-checkbox" type="checkbox" checked>
-                  <span class="custom-checkbox"></span>
-                </div>
-              </div>
-              <button id="timer-start">Start</button>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="timer-background-container">
-          <img id="timer-bg-image" class="timer-bg-image" src="./assets/images/room_0000.webp">
+          <button id="popup-button" type="button">Start Timer</button>
         </div>
       </div>
+      
+      <!-- Timer Controls -->
+      <div class="timer-controls">
+        <h2 id="task-title"></h2>
+        <p id="countdown-display">&nbsp;</p>
+        <div>
+          <button id="pause-button" class="control-buttons" disabled>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.6582 9.28638C18.098 10.1862 18.8178 10.6361 19.0647 11.2122C19.2803 11.7152 19.2803 12.2847 19.0647 12.7878C18.8178 13.3638 18.098 13.8137 16.6582 14.7136L9.896 18.94C8.29805 19.9387 7.49907 20.4381 6.83973 20.385C6.26501 20.3388 5.73818 20.0469 5.3944 19.584C5 19.053 5 18.1108 5 16.2264V7.77357C5 5.88919 5 4.94701 5.3944 4.41598C5.73818 3.9531 6.26501 3.66111 6.83973 3.6149C7.49907 3.5619 8.29805 4.06126 9.896 5.05998L16.6582 9.28638Z"
+                stroke="#FFFFFF"
+                stroke-width="2.5px"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          
+          <button id="reset-button" class="control-buttons" disabled>
+            <svg viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+              <g fill="none"
+                fill-rule="evenodd"
+                stroke="#FFF"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5px"
+                transform="matrix(0 1 1 0 2.5 2.5)"
+              >
+                <path d="m3.98652376 1.07807068c-2.38377179 1.38514556-3.98652376 3.96636605-3.98652376 6.92192932 0 4.418278 3.581722 8 8 8s8-3.581722 8-8-3.581722-8-8-8"/>
+                <path d="m4 1v4h-4" transform="matrix(1 0 0 -1 0 6)"/>
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Ambient Controls -->
+      <div class="ambient-panel">
+        <label>Overall volume:</label>
+        <div class="volume-slider">
+          <input id="master-volume"  type="range" min="0" max="1" step="0.1">
+        </div>  
+        <hr>
+        
+        <details>
+          <summary>Ambient sounds</summary>
+            <ul class="ambient-list">
+          <li>
+            <div class="ambient-option">
+              <label class="ambient-label" for="wind-enable">
+               <svg width="42px" height="42px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path xmlns="http://www.w3.org/2000/svg" d="M15.7639 7C16.3132 6.38625 17.1115 6 18 6C19.6569 6 21 7.34315 21 9C21 10.6569 19.6569 12 18 12H3M8.50926 4.66667C8.87548 4.2575 9.40767 4 10 4C11.1046 4 12 4.89543 12 6C12 7.10457 11.1046 8 10 8H3M11.5093 19.3333C11.8755 19.7425 12.4077 20 13 20C14.1046 20 15 19.1046 15 18C15 16.8954 14.1046 16 13 16H3" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input
+                  class="ambient-checkbox"
+                  id="wind-enable"
+                  type="checkbox"
+                >
+              </label>  
+              <input id="wind-volume" type="range" min="0" max="1" step="0.1">
+            </div>
+          </li>
+          
+          <li>
+            <div class="ambient-option">
+              <label class="ambient-label" for="rain-enable">
+                <svg width="42px" height="42px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path xmlns="http://www.w3.org/2000/svg" d="M4 14.7519C3.37037 13.8768 3 12.8059 3 11.6493C3 9.20008 4.8 6.9375 7.5 6.5C8.34694 4.48637 10.3514 3 12.6893 3C15.684 3 18.1317 5.32251 18.3 8.25C19.8893 8.94488 21 10.6503 21 12.4969C21 13.5693 20.6254 14.5541 20 15.3275M12.5 12.9995L10.5 21.0008M8.5 11.9995L6.5 20.0008M16.5 12L14.5 20.0013" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input
+                  class="ambient-checkbox"
+                  id="rain-enable"
+                  type="checkbox"
+                >
+              </label>
+              <input id="rain-volume" type="range" min="0" max="1" step="0.1">
+            </div>
+          </li>
+          
+          <li>
+            <div class="ambient-option">
+              <label class="ambient-label" for="storm-enable">
+                <svg width="42px" height="42px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path xmlns="http://www.w3.org/2000/svg" d="M13 11L10 16H15L12 21M6 16.4438C4.22194 15.5683 3 13.7502 3 11.6493C3 9.20008 4.8 6.9375 7.5 6.5C8.34694 4.48637 10.3514 3 12.6893 3C15.684 3 18.1317 5.32251 18.3 8.25C19.8893 8.94488 21 10.6503 21 12.4969C21 14.0582 20.206 15.4339 19 16.2417" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input
+                  class="ambient-checkbox"
+                  id="storm-enable"
+                  type="checkbox"
+                >
+              </label>  
+              <input id="storm-volume" type="range" min="0" max="1" step="0.1">
+            </div>
+          </li>
+            
+          <li>
+            <div class="ambient-option">
+              <label class="ambient-label" for="fire-enable">
+                <svg width="42px" height="42px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path xmlns="http://www.w3.org/2000/svg" d="M3 4H21M3 8H21M19 4V20M5 4V20M13.7678 19.219C12.7915 20.2604 11.2085 20.2604 10.2322 19.219C9.74408 18.6983 9.5 18.0158 9.5 17.3333C9.5 16.6509 9.74408 15.9684 10.2322 15.4477C10.2322 15.4477 10.4375 16 11.0625 16.3333C11.0625 15.6667 11.2188 14.6667 11.9956 14C12.625 14.6667 13.2785 14.9258 13.7678 15.4477C14.2559 15.9684 14.5 16.6509 14.5 17.3333C14.5 18.0158 14.2559 18.6983 13.7678 19.219Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input
+                  class="ambient-checkbox"
+                  id="fire-enable"
+                  type="checkbox"
+                >
+              </label>  
+              <input id="fire-volume" type="range" min="0" max="1" step="0.1">
+            </div>
+          </li>
+            
+          <li>
+            <div class="ambient-option">
+              <label class="ambient-label" for="cricket-enable">
+                <svg width="42px" height="42px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path xmlns="http://www.w3.org/2000/svg" d="M 6.1630427,11.125533 6.654085,10.523592 7.3188346,13.24905 M 5.2935716,11.092092 4.9867642,10.534575 3.7552767,13.24905 M 4.2749114,3.2501317 3.6533221,8.3822302 2.8022025,4.3536911 M 13.362489,13.24905 11.556664,6.108375 C 10.508202,7.9064548 7.5382343,8.872529 8.0682028,11.358642 9.3141883,11.158531 9.818479,11.637625 10.637031,9.3354504 L 11.556664,6.108375 M 4.9869275,8.4035866 V 11.146572 H 8.0311861 C 7.8697744,9.9789006 8.4999358,9.1547752 9.2967419,8.4035866 Z m 5.9159175,0 -0.265616,0.9317261 c -0.212958,0.598941 -0.404753,1.0095673 -0.593763,1.2929443 1.14098,-0.583174 1.846289,-1.4264316 1.948719,-2.2246704 z M 4.9775242,8.3822302 H 8.3301501 C 8.5026247,10.532743 6.991787,11.167696 4.9655504,11.167696 Z m -1.3242021,0 c 0,0 -0.7566879,-1e-7 -0.7566879,1.8856558 0,1.640387 2.08089,1.631608 2.08089,1.631608 V 8.3822302 Z" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input
+                  class="ambient-checkbox"
+                  id="cricket-enable"
+                  type="checkbox"
+                >
+              </label>  
+              <input id="cricket-volume" type="range" min="0" max="1" step="0.1">
+            </div>
+          </li>
+            
+          <li>
+            <div class="ambient-option">
+              <label class="ambient-label" for="white-enable">
+                <p>W</p>
+                <input
+                  class="ambient-checkbox"
+                  id="white-enable"
+                  type="checkbox"
+                >
+              </label>  
+              <input id="white-volume" type="range" min="0" max="1" step="0.1">
+            </div>
+          </li>
+    
+          <li>
+            <div class="ambient-option">
+              <label class="ambient-label" for="pink-enable">
+                <p>P</p>
+                <input
+                  class="ambient-checkbox"
+                  id="pink-enable"
+                  type="checkbox"
+                >
+              </label>  
+              <input id="pink-volume" type="range" min="0" max="1" step="0.1">
+            </div>
+          </li>
+  
+          <li>
+            <div class="ambient-option">
+              <label class="ambient-label" for="brownian-enable">
+                <p>B</p>
+                <input
+                  class="ambient-checkbox"
+                  id="brownian-enable"
+                  type="checkbox"
+              >
+              </label>  
+              <input id="brownian-volume" type="range" min="0" max="1" step="0.1">
+            </div>
+          </li>
+        </ul>
+        </details>
+        
+        
+        
+      </div>
+      
+      <!-- Background Image -->
+      <div class="bg-image-container">
+        <img id="room-image" class="room-image" src="https://sebastian-wlo.github.io/task-timer/assets/images/room_0000.webp">
+      </div>
     </div>
-
   </main>
+  
   <footer>
     <p>Full List of credits for the audio samples available in the README <a href="./README.md" target="_blank">Link to
         the README file</a></a></p>

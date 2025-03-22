@@ -1,403 +1,257 @@
-// Modal Inputs
-const taskTextInput = document.getElementById("task-text-input");
-const taskTimeInput = document.getElementById("timer-minutes");
-const taskAlertCheckbox = document.getElementById("timer-checkbox");
-const taskStartButton = document.getElementById("timer-start");
-// Modal Window
-const taskDialogWindow = document.getElementById("task-dialog-window");
-// Settings Display
-const taskText = document.getElementById("task-text");
-const countdownText = document.getElementById("countdown-display");
-// Settings Inputs
-const pauseButton = document.getElementById("pause");
-const pauseButtonImage = document.getElementById("pausebutton-image");
-const resetButton = document.getElementById("reset");
-// Display Image
-const roomImage = document.getElementById("timer-bg-image");
-// Ambient Toggles
-const playWindButton = document.getElementById("wind-button");
-const playRainButton = document.getElementById("rain-button");
-const playStormButton = document.getElementById("storm-button");
-const playFireButton = document.getElementById("fireplace-button");
-const playCricketsButton = document.getElementById("cricket-button");
-const playWhitenoiseButton = document.getElementById("whitenoise-button");
-const playPinknoiseButton = document.getElementById("pinknoise-button");
-const playBrowniannoiseButton = document.getElementById("browniannoise-button");
-// Ambient Volume Sliders
-const windVolumeSlider = document.getElementById("wind-volume");
-const rainVolumeSlider = document.getElementById("rain-volume");
-const stormVolumeSlider = document.getElementById("storm-volume");
-const fireVolumeSlider = document.getElementById("fireplace-volume");
-const cricketsVolumeSlider = document.getElementById("cricket-volume");
-const whitenoiseVolumeSlider = document.getElementById("whitenoise-volume");
-const pinknoiseVolumeSlider = document.getElementById("pinknoise-volume");
-const browniannoiseVolumeSlider = document.getElementById("browniannoise-volume");
-// Background Image controls
-let stormy = false;
-let fireplace = false;
-let plants = false;
-let noise = false;
-
-let intervalId;
-let remainingTime = 0;
-let remainigHours = 0;
-let remainingMinutes = 0;
-let remainingSeconds = 0;
-
+// Control Variables
+let timerActive = false;
+let timerPaused = false;
+let controlButtonsActive = false;
+let countdownTimerSeconds = 0;
+let countdownTimerMinutes = 0;
+let countdownTimerHours = 0;
 let playAlert = false;
-let timerPaused = true;
 
-// Setup: Audio Tracks
-const alertSound = new Audio("./assets/audio/alert.webm");
+let timer;
+//AlertSoundSetup
+const alertSound = new Audio("../assets/audio/alert.webm");
 
-const rain = {
-    audio : new Audio("./assets/audio/rain.webm"),
-    volume : 50,
-    isPlaying : false
-}
+// Modal Window Setup
+const popupWindow = document.getElementById("timer-modal");
+const popupTextInput = document.getElementById("task-name");
+const popupTimeInput = document.getElementById("popup-minutes");
+const popupAlertCheckbox = document.getElementById("popup-checkbox");
+const popupStartButton = document.getElementById("popup-button");
 
-const wind = {
-    audio : new Audio("./assets/audio/wind.webm"),
-    volume : 50,
-    isPlaying : false
-}
+// UI Setup
+const taskDisplayName = document.getElementById("task-title");
+const countdownText = document.getElementById("countdown-display");
+const pauseButton = document.getElementById("pause-button");
+const resetButton = document.getElementById("reset-button");
 
-const storm = {
-    audio : new Audio("./assets/audio/storm.webm"),
-    volume : 50,
-    isPlaying : false
-}
+//Background Image Setup
+const backgroundImageFore = document.getElementById("room-image");
+let imageModifiers = [false, false, false, false];
 
-const fire = {
-    audio : new Audio("./assets/audio/fireplace.webm"),
-    volume : 50,
-    isPlaying : false
-}
+// Master Audio Slider
+const masterVolumeSlide = document.getElementById("master-volume");
+// Ambient Audio Setup
+let ambientSounds = {
+  wind: {
+    button: document.getElementById("wind-enable"),
+    audio: new Audio("../assets/audio/wind.webm"),
+    slider: document.getElementById("wind-volume"),
+    audioVolume: 0,
+  },
+  rain: {
+    button: document.getElementById("rain-enable"),
+    audio: new Audio("../assets/audio/rain.webm"),
+    slider: document.getElementById("rain-volume"),
+    audioVolume: 0,
+  },
+  storm: {
+    button: document.getElementById("storm-enable"),
+    audio: new Audio("../assets/audio/storm.webm"),
+    slider: document.getElementById("storm-volume"),
+    audioVolume: 0,
+  },
+  fire : {
+    button: document.getElementById("fire-enable"),
+    audio: new Audio("../assets/audio/fireplace.webm"),
+    slider: document.getElementById("fire-volume"),
+    audioVolume: 0,
+  },
+  cricket: {
+    button: document.getElementById("cricket-enable"),
+    audio: new Audio("../assets/audio/crickets.webm"),
+    slider: document.getElementById("cricket-volume"),
+    audioVolume: 0,
+  },
+  white: {
+    button: document.getElementById("white-enable"),
+    audio: new Audio("../assets/audio/white.webm"),
+    slider: document.getElementById("white-volume"),
+    audioVolume: 0,
+  },
+  pink: {
+    button: document.getElementById("pink-enable"),
+    audio: new Audio("../assets/audio/pink.webm"),
+    slider: document.getElementById("pink-volume"),
+    audioVolume: 0,
+  },
+  brownian: {
+    button: document.getElementById("brownian-enable"),
+    audio: new Audio("../assets/audio/brownian.webm"),
+    slider: document.getElementById("brownian-volume"),
+    audioVolume: 0,
+  }
+};
 
-const crickets = {
-    audio : new Audio("./assets/audio/crickets.webm"),
-    volume : 50,
-    isPlaying : false
-}
 
-const whitenoise = {
-    audio : new Audio("./assets/audio/white.webm"),
-    volume : 50,
-    isPlaying : false
-}
-
-const pinknoise = {
-    audio : new Audio("./assets/audio/pink.webm"),
-    volume : 50,
-    isPlaying : false
-}
-
-const browniannoise = {
-    audio : new Audio("./assets/audio/brownian.webm"),
-    volume : 50,
-    isPlaying : false
-}
-
-wind.audio.loop = true;
-rain.audio.loop = true;
-storm.audio.loop = true;
-fire.audio.loop = true;
-crickets.audio.loop = true;
-whitenoise.audio.loop = true;
-pinknoise.audio.loop = true;
-browniannoise.audio.loop = true;
-
-function timerActive() {
-    taskDialogWindow.setAttribute("style", "visibility: hidden;");
-    intervalId = setInterval(timeout, 1000);
-    pauseButton.removeAttribute("disabled", "");
-    resetButton.removeAttribute("disabled", "");
-    timerPaused = false;
-    pauseButtonImage.setAttribute("src", "assets/images/pause.webp");
-    pauseButton.classList.remove("button-grayed");
-    resetButton.classList.remove("button-grayed");
-}
-
-function timerNotActive() {
-    clearInterval(intervalId);
-    taskDialogWindow.removeAttribute("style");
-    pauseButton.setAttribute("disabled", "");
-    resetButton.setAttribute("disabled", "");
-    timerPaused = true;
-    pauseButtonImage.setAttribute("src", "assets/images/play.webp");
-    pauseButton.classList.add("button-grayed");
-    resetButton.classList.add("button-grayed");
-}
-
+// Timeout Setup
 function timeout() {
-    if (!timerPaused) {
-        if (remainingTime > 1)
-            {
-                remainingTime--;
-                remainingMinutes = Math.floor(remainingTime/60) + 1;
-                remainingSeconds = remainingTime - (remainingMinutes - 1) * 60;
-                console.log("minutes:", Math.floor(remainingTime/60), " seconds:", remainingSeconds);
-                countdownText.innerText = `${remainingMinutes.toString()}`;
-                countdownText.innerText += remainingMinutes > 1 ? " minutes to go" : " mniute to go";
-            }
-            else
-            {
-                if (playAlert)
-                    {
-                        alertSound.play();
-                    }
-                timerNotActive();
-            }
+  console.log(countdownTimerSeconds);
+  if (!timerPaused && countdownTimerSeconds >= 1) {
+    countdownTimerMinutes = Math.floor(countdownTimerSeconds / 60) + 1;
+    countdownTimerSeconds -= 1;
+    console.log(`Remaining Time: ${countdownTimerMinutes} minutes, ${countdownTimerSeconds - ((countdownTimerMinutes - 1) * 60)} seconds.`);
+    if (countdownTimerMinutes > 1) {
+      countdownText.innerText = `${countdownTimerMinutes} minutes to go`;
+    } else {
+      countdownText.innerText = "One minute to go";
     }
+  } else if (countdownTimerSeconds < 1) {
+    if (playAlert) {
+      alertSound.play();
+    }
+    timerStop();
+  }
+};
+
+// Task Timer Setup
+// Resize the text iput field accordingly to the number of lines of text in the textarea
+function auto_height(elem) {
+    elem.style.height = '1px';
+    elem.style.height = `${elem.scrollHeight}px`;
 }
 
-// When the page finishes loading, display the dialog window asking for a timer name
-window.onload = () => {
-    windVolumeSlider.value = 50;
-    rainVolumeSlider.value = 50;
-    stormVolumeSlider.value = 50;
-    fireVolumeSlider.value = 50;
-    cricketsVolumeSlider.value = 50;
-    whitenoiseVolumeSlider.value = 50;
-    pinknoiseVolumeSlider.value = 50;
-    browniannoiseVolumeSlider.value = 50;
-
-    wind.audio.volume = .5;
-    rain.audio.volume = .5;
-    storm.audio.volume = .5;
-    fire.audio.volume = .5;
-    crickets.audio.volume = .5;
-    whitenoise.audio.volume = .5;
-    browniannoise.audio.volume = .5;
-
-    playWindButton.classList.add("button-grayed");
-    playRainButton.classList.add("button-grayed");
-    playStormButton.classList.add("button-grayed");
-    playFireButton.classList.add("button-grayed");
-    playCricketsButton.classList.add("button-grayed");
-    playWhitenoiseButton.classList.add("button-grayed");
-    playPinknoiseButton.classList.add("button-grayed");
-    playBrowniannoiseButton.classList.add("button-grayed");
-
-    pauseButton.classList.add("button-grayed");
-    resetButton.classList.add("button-grayed");
+function timerRun() {
+  timerActive = true;
+  timerPaused = false;
+  showHideModal();
+  enableDisableControls();
+  timer = setInterval(timeout, 1000);
 }
 
-// Pressing start hides the modal, sets the remaingTime and starts the countdown
-taskStartButton.addEventListener("click", () => {
-    taskText.innerText = taskTextInput.value != 0 ? taskText.innerText : "";
-    taskText.innerText = taskTextInput.value;
-    remainingTime = +taskTimeInput.value * 60;
-    playAlert = taskAlertCheckbox.checked;
-    timerActive();
+function timerPause() {
+  timerPaused = !timerPaused;
+  changePlayPauseButton();
+}
+
+function timerStop() {
+  countdownText.innerHTML = "&nbsp;";
+  //taskDisplayName.innerHTML = "&nbsp;";
+  timerActive = false;
+  showHideModal();
+  enableDisableControls();
+  clearInterval(timer);
+}
+
+function showHideModal() {
+  if (timerActive) {
+    popupWindow.classList.add("visibility-hidden");
+  } else {
+    popupWindow.classList.remove("visibility-hidden");
+  };
+}
+
+function enableDisableControls() {
+  resetButton.disabled = !(resetButton.disabled);
+  pauseButton.disabled = !(pauseButton.disabled);
+}
+
+popupStartButton.addEventListener("click", () => {
+  taskDisplayName.innerText = popupTextInput.value;
+  countdownTimerSeconds = popupTimeInput.value * 60;
+  playAlert = popupAlertCheckbox.checked;
+  console.log("Play alert? ", playAlert);
+  // Hide the main modal
+  timerRun();
+  changePlayPauseButton();
 });
 
 pauseButton.addEventListener("click", () => {
-        if (timerPaused)  {
-            pauseButtonImage.setAttribute("src", "assets/images/pause.webp");
-        }
-        else {
-            pauseButtonImage.setAttribute("src", "assets/images/play.webp");
-        }
-        timerPaused = !timerPaused;
+  timerPause();
 });
 
 resetButton.addEventListener("click", () => {
-    timerPaused = true;
-    timerNotActive();
+  timerStop();
+  changePlayPauseButton();
 });
 
-playWindButton.addEventListener("click", () =>  {
-    audioPlayPause(wind);
-    changeButton(playWindButton, wind);
+
+// When Master Volume is changed, update the audio levels 
+masterVolumeSlide.addEventListener("input", () => {
+    changeVolume();
 });
 
-playRainButton.addEventListener("click", () => {
-    audioPlayPause(rain);
-    changeRoom();
-    changeButton(playRainButton, rain);
-    if (storm.isPlaying) {
-        audioPlayPause(storm);
-        changeButton(playStormButton, storm);
-    }
-});
+// When any of the volume settings are changed, update all outputs taking master setting into account 
+function changeVolume() {
+  alertSound.volume = masterVolumeSlide.value;
+  for (let sound in ambientSounds) {
+    ambientSounds[sound].audio.volume = ambientSounds[sound].audioVolume * masterVolumeSlide.value;
+  }
+};
 
-playStormButton.addEventListener("click", () => {
-    audioPlayPause(storm)
-    changeRoom();
-    changeButton(playStormButton, storm);
-    if (rain.isPlaying) {
-        audioPlayPause(rain);
-        changeButton(playRainButton, rain);
-    }
-});
+function changePlayPauseButton() {
+  if (!(timerActive) ||timerPaused) {
+    pauseButton.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M16.6582 9.28638C18.098 10.1862 18.8178 10.6361 19.0647 11.2122C19.2803 11.7152 19.2803 12.2847 19.0647 12.7878C18.8178 13.3638 18.098 13.8137 16.6582 14.7136L9.896 18.94C8.29805 19.9387 7.49907 20.4381 6.83973 20.385C6.26501 20.3388 5.73818 20.0469 5.3944 19.584C5 19.053 5 18.1108 5 16.2264V7.77357C5 5.88919 5 4.94701 5.3944 4.41598C5.73818 3.9531 6.26501 3.66111 6.83973 3.6149C7.49907 3.5619 8.29805 4.06126 9.896 5.05998L16.6582 9.28638Z" stroke="#FFF" stroke-width="2.5px" stroke-linejoin="round"/></svg>`
+  } else {
+    pauseButton.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 5V19M16 5V19" stroke="#FFF" stroke-width="2.5px" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+  };
+};
 
-playFireButton.addEventListener("click", () => {
-    audioPlayPause(fire)
-    changeRoom();
-    changeButton(playFireButton, fire);
-});
+// When certain Ambient Audio Tracks are selected, change the background image
+function changeRoomImg() {
+  imageModifiers[0] = (!ambientSounds.rain.button.checked && !ambientSounds.storm.button.checked) ? false : true;
+  imageModifiers[1] = (!ambientSounds.fire.button.checked) ? false : true;
+  imageModifiers[2] = (!ambientSounds.cricket.button.checked) ? false : true;
+  imageModifiers[3] = (!ambientSounds.white.button.checked && !ambientSounds.pink.button.checked && !ambientSounds.brownian.button.checked) ? false : true;
+  
+  backgroundImageFore.setAttribute("src", `../assets/images/room_${+imageModifiers[0]}${+imageModifiers[1]}${+imageModifiers[2]}${+imageModifiers[3]}.webp`)
+};
 
-playCricketsButton.addEventListener("click", () => {
-    audioPlayPause(crickets)
-    changeRoom();
-    changeButton(playCricketsButton, crickets);
-});
-
-playWhitenoiseButton.addEventListener("click", () => {
-    audioPlayPause(whitenoise)
-    changeRoom();
-    changeButton(playWhitenoiseButton, whitenoise);
-    if (pinknoise.isPlaying) {
-        audioPlayPause(pinknoise);
-        changeButton(playPinknoiseButton, pinknoise);
-    }
-    if (browniannoise.isPlaying) {
-        audioPlayPause(browniannoise);
-        changeButton(playBrowniannoiseButton, browniannoise);
-    }
-});
-
-playPinknoiseButton.addEventListener("click", () => {
-    audioPlayPause(pinknoise)
-    changeRoom();
-    changeButton(playPinknoiseButton, pinknoise);
-    if (whitenoise.isPlaying) {
-        audioPlayPause(whitenoise);
-        changeButton(playWhitenoiseButton, whitenoise);
-    }
-    if (browniannoise.isPlaying) {
-        audioPlayPause(browniannoise);
-        changeButton(playBrowniannoiseButton, browniannoise);
-    }
-});
-
-playBrowniannoiseButton.addEventListener("click", () => {
-    audioPlayPause(browniannoise)
-    changeRoom();
-    changeButton(playBrowniannoiseButton, browniannoise);
-    if (whitenoise.isPlaying) {
-        audioPlayPause(whitenoise);
-        changeButton(playWhitenoiseButton, whitenoise);
-    }
-    if (pinknoise.isPlaying) {
-        audioPlayPause(pinknoise);
-        changeButton(playPinknoiseButton, pinknoise);
-    }
-});
-
-// Ambient Sliders Control
-windVolumeSlider.addEventListener("input", () => {
-    if (wind.volume != windVolumeSlider.value)
-    {
-        wind.volume = windVolumeSlider.value;
-        wind.audio.volume = wind.volume / 100;
-    }
-});
-
-rainVolumeSlider.addEventListener("input", () => {
-    if (rain.volume != rainVolumeSlider.value)
-    {
-        rain.volume = rainVolumeSlider.value;
-        rain.audio.volume = rain.volume / 100;
-    }
-});
-
-stormVolumeSlider.addEventListener("input", () => {
-    if (storm.volume != stormVolumeSlider.value)
-    {
-        storm.volume = stormVolumeSlider.value;
-        storm.audio.volume = storm.volume / 100;
-    }
-});
-
-cricketsVolumeSlider.addEventListener("input", () => {
-    if (crickets.volume != cricketsVolumeSlider.value)
-    {
-        crickets.volume = cricketsVolumeSlider.value;
-        crickets.audio.volume = crickets.volume / 100;
-    }
-});
-
-whitenoiseVolumeSlider.addEventListener("input", () => {
-    if (whitenoise.volume != whitenoiseVolumeSlider.value)
-    {
-        whitenoise.volume = whitenoiseVolumeSlider.value;
-        whitenoise.audio.volume = whitenoise.volume / 100;
-    }
-});
-
-pinknoiseVolumeSlider.addEventListener("input", () => {
-    if (pinknoise.volume != pinknoiseVolumeSlider.value)
-    {
-        pinknoise.volume = pinknoiseVolumeSlider.value;
-        pinknoise.audio.volume = pinknoise.volume / 100;
-    }
-});
-
-browniannoiseVolumeSlider.addEventListener("input", () => {
-    if (browniannoise.volume != browniannoiseVolumeSlider.value)
-    {
-        browniannoise.volume = browniannoiseVolumeSlider.value;
-        browniannoise.audio.volume = browniannoise.volume / 100;
-    }
-});
-
-// When the timer reches zero play the alert sound, stop the timer, and display the dialog window
-function showModal() {
+window.onload = () => {
+  auto_height(popupTextInput);
+  // Setup for Ambient Inputs
+  for (let sound in ambientSounds) {
+    ambientSounds[sound].audio.loop = true;
+    ambientSounds[sound].audioVolume = ambientSounds[sound].slider.value;
     
-}
-
-function audioPlayPause(audioSrc) {
-    audioSrc.isPlaying = !audioSrc.isPlaying;
-    if (audioSrc.isPlaying) {
-        audioSrc.audio.play();
-    }
-    else{
-        audioSrc.audio.pause();
-    }
-}
-
-function changeRoom() {
-    if (rain.isPlaying || storm.isPlaying) {
-        stormy = true;
-    }
-    else {
-        stormy = false;
-    }
-    if (fire.isPlaying) {
-        fireplace = true;
-    }
-    else {
-        fireplace = false;
-    }
-    if (crickets.isPlaying) {
-        plants = true;
-    } else {
-        plants = false;
-    }
-    if (whitenoise.isPlaying || browniannoise.isPlaying) {
-        noise = true;
-    } else {
-        noise = false;
-    }
-    changeRoomImage(`assets/images/room_${+stormy}${+fireplace}${+plants}${+noise}.webp`);
-}
-
-function changeRoomImage(newRoom) {
-    let currentRoom = roomImage.getAttribute("src");
-    if (currentRoom !== newRoom) {
-        roomImage.setAttribute("src", newRoom);
-    }
-}
-
-function changeButton(btn, ambient) {
-    if (ambient.isPlaying) {
-        btn.classList.add("button-lightup");
-        btn.classList.remove("button-grayed");
-    }
-    else {
-        btn.classList.add("button-grayed");
-        btn.classList.remove("button-lightup");
-    }
+    ambientSounds[sound].button.addEventListener("change", () => {
+      if (ambientSounds[sound].button.checked){
+        ambientSounds[sound].audio.play();
+        switch (sound) {
+          case "rain":
+            ambientSounds.storm.audio.pause();
+            ambientSounds.storm.button.checked = false;
+            break;
+          case "storm":
+            ambientSounds.rain.audio.pause();
+            ambientSounds.rain.button.checked = false;
+            break;
+          case "white":
+            ambientSounds.pink.audio.pause();
+            ambientSounds.pink.button.checked = false;
+            ambientSounds.brownian.audio.pause();
+            ambientSounds.brownian.button.checked = false;
+            break;
+          case "pink":
+            ambientSounds.white.audio.pause();
+            ambientSounds.white.button.checked = false;
+            ambientSounds.brownian.audio.pause();
+            ambientSounds.brownian.button.checked = false;
+            break;
+          case "brownian":
+            ambientSounds.white.audio.pause();
+            ambientSounds.white.button.checked = false;
+            ambientSounds.pink.audio.pause();
+            ambientSounds.pink.button.checked = false;
+            break;
+          default:
+            break;
+        };
+      }
+      else {
+        ambientSounds[sound].audio.pause();
+      };
+      changeRoomImg();
+    });
+    
+    ambientSounds[sound].slider.addEventListener("input", () => {
+      if (ambientSounds[sound].slider.value !== ambientSounds[sound].audioVolume) {
+        ambientSounds[sound].audioVolume = ambientSounds[sound].slider.value
+        changeVolume();
+      };
+   });
+};
+  // Update Volume levels to default
+  changeVolume();
 }
