@@ -9,7 +9,7 @@ let playAlert = false;
 
 let timer;
 //AlertSoundSetup
-const alertSound = new Audio("../assets/audio/alert.webm");
+const alertSound = new Audio("./assets/audio/alert.webm");
 
 // Modal Window Setup
 const popupWindow = document.getElementById("timer-modal");
@@ -34,49 +34,49 @@ const masterVolumeSlide = document.getElementById("master-volume");
 let ambientSounds = {
   wind: {
     button: document.getElementById("wind-enable"),
-    audio: new Audio("../assets/audio/wind.webm"),
+    audio: new Audio("./assets/audio/wind.webm"),
     slider: document.getElementById("wind-volume"),
     audioVolume: 0,
   },
   rain: {
     button: document.getElementById("rain-enable"),
-    audio: new Audio("../assets/audio/rain.webm"),
+    audio: new Audio("./assets/audio/rain.webm"),
     slider: document.getElementById("rain-volume"),
     audioVolume: 0,
   },
   storm: {
     button: document.getElementById("storm-enable"),
-    audio: new Audio("../assets/audio/storm.webm"),
+    audio: new Audio("./assets/audio/storm.webm"),
     slider: document.getElementById("storm-volume"),
     audioVolume: 0,
   },
   fire : {
     button: document.getElementById("fire-enable"),
-    audio: new Audio("../assets/audio/fireplace.webm"),
+    audio: new Audio("./assets/audio/fireplace.webm"),
     slider: document.getElementById("fire-volume"),
     audioVolume: 0,
   },
   cricket: {
     button: document.getElementById("cricket-enable"),
-    audio: new Audio("../assets/audio/crickets.webm"),
+    audio: new Audio("./assets/audio/crickets.webm"),
     slider: document.getElementById("cricket-volume"),
     audioVolume: 0,
   },
   white: {
     button: document.getElementById("white-enable"),
-    audio: new Audio("../assets/audio/white.webm"),
+    audio: new Audio("./assets/audio/white.webm"),
     slider: document.getElementById("white-volume"),
     audioVolume: 0,
   },
   pink: {
     button: document.getElementById("pink-enable"),
-    audio: new Audio("../assets/audio/pink.webm"),
+    audio: new Audio("./assets/audio/pink.webm"),
     slider: document.getElementById("pink-volume"),
     audioVolume: 0,
   },
   brownian: {
     button: document.getElementById("brownian-enable"),
-    audio: new Audio("../assets/audio/brownian.webm"),
+    audio: new Audio("./assets/audio/brownian.webm"),
     slider: document.getElementById("brownian-volume"),
     audioVolume: 0,
   }
@@ -195,7 +195,7 @@ function changeRoomImg() {
   imageModifiers[2] = (!ambientSounds.cricket.button.checked) ? false : true;
   imageModifiers[3] = (!ambientSounds.white.button.checked && !ambientSounds.pink.button.checked && !ambientSounds.brownian.button.checked) ? false : true;
   
-  backgroundImageFore.setAttribute("src", `../assets/images/room_${+imageModifiers[0]}${+imageModifiers[1]}${+imageModifiers[2]}${+imageModifiers[3]}.webp`)
+  backgroundImageFore.setAttribute("src", `./assets/images/room_${+imageModifiers[0]}${+imageModifiers[1]}${+imageModifiers[2]}${+imageModifiers[3]}.webp`)
 };
 
 window.onload = () => {
