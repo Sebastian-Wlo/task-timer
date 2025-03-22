@@ -1,125 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./CSS/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./CSS/styles.css">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
-    
-    <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="64x64">
-    <title>Task Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="64x64">
+  <title>Task Timer</title>
 </head>
+
 <body>
-    <main>
-        <div class="timer-widget">
-            <header>
-                <h1 class="timer-title">Task Timer</h1>
-            </header>
-            <div class="timer-main">
+  <main>
+    <div class="timer-widget">
+      <header>
+        <h1 class="timer-title">Task Timer</h1>
+      </header>
+      <div class="timer-main">
 
-                <div class="timer-main-section">
-                    <!-- Ambient Controls -->
-                    <div class="ambient-controls">
-                        <ul class="ambient-list">
-                            <li>
-                                <div style="display: flex;">
-                                    <button id="wind-button" type="button" class="ambient-option"><img src="assets/images/icon_wind.webp"></button>
-                                    <input id="wind-volume" type="range" class="ambient-slider" min="0" max="100", value="50" step="10">
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display: flex;">
-                                    <button id="rain-button" type="button" class="ambient-option"><img src="assets/images/icon_rain.webp"></button>
-                                    <input id="rain-volume" type="range" class="ambient-slider" min="0" max="100", value="50" step="10">
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display: flex;">
-                                    <button id="storm-button" type="button" class="ambient-option"><img src="assets/images/icon_storm.webp"></button>
-                                    <input id="storm-volume" type="range" class="ambient-slider" min="0" max="100", value="50" step="10">
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display: flex;">
-                                    <button id="fireplace-button" type="button" class="ambient-option"><img src="assets/images/icon_fire.webp"></button>
-                                    <input id="fireplace-volume" type="range" class="ambient-slider" min="0" max="100", value="50" step="10">
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display: flex;">
-                                    <button id="cricket-button" type="button" class="ambient-option"><img src="assets/images/icon_cricket.webp"></button>
-                                    <input id="cricket-volume" type="range" class="ambient-slider" min="0" max="100", value="50" step="10">
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display: flex;">
-                                    <button id="whitenoise-button" type="button" class="ambient-option"><img src="assets/images/icon_w.webp"></button>
-                                    <input id="whitenoise-volume" type="range" class="ambient-slider" min="0" max="100", value="50" step="10">
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display: flex;">
-                                    <button id="pinknoise-button" type="button" class="ambient-option"><img src="assets/images/icon_p.webp"></button>
-                                    <input id="pinknoise-volume" type="range" class="ambient-slider" min="0" max="100", value="50" step="10">
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display: flex;">
-                                    <button id="browniannoise-button" type="button" class="ambient-option"><img src="assets/images/icon_b.webp"></button>
-                                    <input id="browniannoise-volume" type="range" class="ambient-slider" min="0" max="100", value="50" step="10">
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="timer-controls">
-                        <h2 id="task-text">Task name</h2>
-                        <h3 id="countdown-display">25 minutes to go</h3>
-                        <div class="timer-buttons">
-                        <button id="pause" class="ambient-option" disabled class="button-grayed"><img id="pausebutton-image"src="assets/images/pause.webp" alt="pause"></button>
-                        <button id="reset" class="ambient-option" disabled class="button-grayed"><img src="assets/images/reset.webp" alt="reset"></button>
-                        </div>
-                    </div>
-
-                    <!-- Timer Modal -->
-                    <div id="task-dialog-window" class="timer-popup">
-                        <h2 id="timer-popup-heading">
-                            What do you want to focus on today?
-                        </h2>
-                        <div class="timer-popup-inputs">
-                            <input id="task-text-input" class="task-title-input" aria-labelledy="timer-popup-heading" placeholder="Task Name">
-                            <hr>
-                            <div class="task-popup-input">
-                                <label for="timer-minutes">For how many minutes?</label>
-                            <input id="timer-minutes" class="time-input" type="number" value="25" min="0">
-                            </div>
-                            <div class="task-popup-input">
-                                <label for="timer-checkbox">Play alert sound after timer?</label>
-                                <div class="checkbox-container">
-                                    <input id="timer-checkbox" type="checkbox" checked>
-                                    <span class="custom-checkbox"></span>
-                                </div>
-                            </div>
-                            <button id="timer-start">Start</button>
-                        </div>
-
-                    </div>
-
+        <div class="timer-main-section">
+          <!-- Ambient Controls -->
+          <div class="ambient-controls">
+            <ul class="ambient-list">
+              <li>
+                <div style="display: flex;">
+                  <button id="wind-button" type="button" class="ambient-option"><img
+                      src="assets/images/icon_wind.webp"></button>
+                  <input id="wind-volume" type="range" class="ambient-slider" min="0" max="100" , value="50" step="10">
                 </div>
-
-                <div class="timer-background-container">
-                    <img id="timer-bg-image" class="timer-bg-image" src="./assets/images/room_0000.webp">
+              </li>
+              <li>
+                <div style="display: flex;">
+                  <button id="rain-button" type="button" class="ambient-option"><img
+                      src="assets/images/icon_rain.webp"></button>
+                  <input id="rain-volume" type="range" class="ambient-slider" min="0" max="100" , value="50" step="10">
                 </div>
+              </li>
+              <li>
+                <div style="display: flex;">
+                  <button id="storm-button" type="button" class="ambient-option"><img
+                      src="assets/images/icon_storm.webp"></button>
+                  <input id="storm-volume" type="range" class="ambient-slider" min="0" max="100" , value="50" step="10">
+                </div>
+              </li>
+              <li>
+                <div style="display: flex;">
+                  <button id="fireplace-button" type="button" class="ambient-option"><img
+                      src="assets/images/icon_fire.webp"></button>
+                  <input id="fireplace-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
+                    step="10">
+                </div>
+              </li>
+              <li>
+                <div style="display: flex;">
+                  <button id="cricket-button" type="button" class="ambient-option"><img
+                      src="assets/images/icon_cricket.webp"></button>
+                  <input id="cricket-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
+                    step="10">
+                </div>
+              </li>
+              <li>
+                <div style="display: flex;">
+                  <button id="whitenoise-button" type="button" class="ambient-option"><img
+                      src="assets/images/icon_w.webp"></button>
+                  <input id="whitenoise-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
+                    step="10">
+                </div>
+              </li>
+              <li>
+                <div style="display: flex;">
+                  <button id="pinknoise-button" type="button" class="ambient-option"><img
+                      src="assets/images/icon_p.webp"></button>
+                  <input id="pinknoise-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
+                    step="10">
+                </div>
+              </li>
+              <li>
+                <div style="display: flex;">
+                  <button id="browniannoise-button" type="button" class="ambient-option"><img
+                      src="assets/images/icon_b.webp"></button>
+                  <input id="browniannoise-volume" type="range" class="ambient-slider" min="0" max="100" , value="50"
+                    step="10">
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="timer-controls">
+            <h2 id="task-text">Task name</h2>
+            <h3 id="countdown-display">25 minutes to go</h3>
+            <div class="timer-buttons">
+              <button id="pause" class="ambient-option" disabled class="button-grayed"><img id="pausebutton-image"
+                  src="assets/images/pause.webp" alt="pause"></button>
+              <button id="reset" class="ambient-option" disabled class="button-grayed"><img
+                  src="assets/images/reset.webp" alt="reset"></button>
             </div>
+          </div>
+
+          <!-- Timer Modal -->
+          <div id="task-dialog-window" class="timer-popup">
+            <h2 id="timer-popup-heading">
+              What do you want to focus on today?
+            </h2>
+            <div class="timer-popup-inputs">
+              <input id="task-text-input" class="task-title-input" aria-labelledy="timer-popup-heading"
+                placeholder="Task Name">
+              <hr>
+              <div class="task-popup-input">
+                <label for="timer-minutes">For how many minutes?</label>
+                <input id="timer-minutes" class="time-input" type="number" value="25" min="0">
+              </div>
+              <div class="task-popup-input">
+                <label for="timer-checkbox">Play alert sound after timer?</label>
+                <div class="checkbox-container">
+                  <input id="timer-checkbox" type="checkbox" checked>
+                  <span class="custom-checkbox"></span>
+                </div>
+              </div>
+              <button id="timer-start">Start</button>
+            </div>
+
+          </div>
+
         </div>
 
-    </main>
-    <footer>
-        <p>Full List of credits for the audio samples available in the README <a href="./README.md" target="_blank">Link to the README file</a></a></p>
-    </footer>
-    <script src="./scripts/tasktimer.js"></script>
+        <div class="timer-background-container">
+          <img id="timer-bg-image" class="timer-bg-image" src="./assets/images/room_0000.webp">
+        </div>
+      </div>
+    </div>
+
+  </main>
+  <footer>
+    <p>Full List of credits for the audio samples available in the README <a href="./README.md" target="_blank">Link to
+        the README file</a></a></p>
+  </footer>
+  <script src="./scripts/tasktimer.js"></script>
 </body>
+
 </html>
